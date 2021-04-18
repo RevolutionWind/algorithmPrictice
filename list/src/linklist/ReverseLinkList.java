@@ -1,7 +1,7 @@
 package linklist;
 
 /**
- * 反转链表
+ * 206. 反转链表
  *
  * @author walker
  * @date 2020-07-29
@@ -20,15 +20,14 @@ public class ReverseLinkList {
     }
 
     public ListNode double_point_reverseList(ListNode head) {
-        ListNode cur = null;
-        ListNode pre = head;
-        while (pre != null) {
-            ListNode temp = pre.next;
-            pre.next = cur;
-            cur = pre;
-            pre = temp;
+        ListNode slow = null, fast = head;
+        while (fast != null) {
+            ListNode temp = fast.next;
+            fast.next = slow;
+            slow = fast;
+            fast = temp;
         }
-        return cur;
+        return slow;
     }
 
     public ListNode recursion_reverseList(ListNode head) {

@@ -1,10 +1,11 @@
-package array;
+package nsum;
 
 import java.util.*;
 import java.util.stream.Collectors;
 
 /**
- * leetcode15.三数之和
+ * 15.三数之和
+ * <p>
  * 计算三数之和是否为0，并返回所有符合条件的结果集，
  * 并且不能有重复的三个数
  * <p>
@@ -92,10 +93,50 @@ public class ThreeSum {
         return result;
     }
 
+    /**
+     * threeSum通用模板
+     *
+     * @return res
+     */
+    public List<List<Integer>> threeSumCommon(int[] nums) {
+        Arrays.sort(nums);
+        int len = nums.length;
+        List<List<Integer>> res = new ArrayList<>(len);
+        for (int i = 0; i < len - 1; i++) {
+            List<List<Integer>> temp = twoSum(nums, i + 1, len - 1, -nums[i]);
+            for (List<Integer> t : temp) {
+                t.add(nums[i]);
+                res.add(t);
+            }
+            // 跳过重复的元素
+            while (i < len - 1 && nums[i] == nums[i + 1]) i++;
+        }
+        return res;
+    }
+
+    public List<List<Integer>> twoSum(int[] nums, int left, int right, int target) {
+        if (right - left < 1) return new ArrayList<>();
+        List<List<Integer>> res = new ArrayList<>(right - left + 1);
+        while (left < right) {
+            int sum = nums[left] + nums[right];
+            int lVal = nums[left], rVal = nums[right];
+            if (sum == target) {
+                res.add(new ArrayList<>(Arrays.asList(lVal, rVal)));
+                while (left < right && nums[left] == lVal) left++;
+                while (left < right && nums[right] == rVal) right--;
+            } else if (sum < target) {
+                while (left < right && nums[left] == lVal) left++;
+            } else {
+                while (left < right && nums[right] == rVal) right--;
+            }
+        }
+        return res;
+    }
+
     public static void main(String[] args) {
         ThreeSum t = new ThreeSum();
-        int[] arr = {-1, 0, 1, 2, -1, -4};
-        List<List<Integer>> list = t.threeSum3(arr);
+        int[] arr = {-2, 0, 1, 1, 2};
+        List<List<Integer>> list = t.threeSumCommon(arr);
         list.forEach(l -> System.out.println(l.stream().map(Objects::toString).collect(Collectors.joining(","))));
     }
 }
