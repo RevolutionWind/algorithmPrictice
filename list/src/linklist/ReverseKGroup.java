@@ -21,7 +21,6 @@ public class ReverseKGroup {
         翻转[start, end)区间的链表，左闭右开
      */
     private ListNode reverse(ListNode start, ListNode end) {
-        if (start == null || start.next == null) return start;
         ListNode slow = null, fast = start;
         while (fast != end) {
             ListNode temp = fast.next;
@@ -33,7 +32,6 @@ public class ReverseKGroup {
     }
 
     public ListNode reverseKGroup(ListNode head, int k) {
-        if (head == null) return null;
         ListNode end = head;
         for (int i = 0; i < k; i++) {
             // 如果不足k个，不需要翻转
