@@ -40,28 +40,25 @@ public class MaxSlidingWindow {
         3. 当滑动窗口进入新元素时，在队列中从右到左比较元素的大小，如果新元素比最右元素大，则弹出最右元素，直至新元素成为最右
         4. 当滑动窗口弹出旧元素时，要比较最左元素是否和旧元素相等，若相等，则弹出最左元素
      */
-//    public int[] maxSlidingWindow2(int[] nums, int k) {
-//        int len = nums.length;
-//        int[] res = new int[len - k + 1];
-//        Deque<Integer> deque = new LinkedList<>();
-////        for (int i = 0, j = 1 - k; )
-//    }
-
     /*
     双指针
      */
     public int[] maxSlidingWindow(int[] nums, int k) {
-        if (nums.length == 0 || k == 0) return new int[0];
         Deque<Integer> deque = new LinkedList<>();
-        int[] res = new int[nums.length - k + 1];
-        for (int j = 0, i = 1 - k; j < nums.length; i++, j++) {
-            if (i > 0 && deque.getFirst() == nums[i - 1])
-                deque.removeFirst(); // 删除 deque 中对应的 nums[i-1]
-            while (!deque.isEmpty() && deque.peekLast() < nums[j])
-                deque.removeLast(); // 保持 deque 递减
-            deque.addLast(nums[j]);
-            if (i >= 0)
-                res[i] = deque.getFirst();  // 记录窗口最大值
+        int len = nums.length;
+        int[] res = new int[len - k + 1];
+        for (int slow = 1 - k, fast = 0; fast < len; ++slow, ++fast) {
+            // 如果左边弹出值等于最大值，则栈弹出
+            if (slow > 0 && nums[slow - 1] == deque.getFirst()) {
+                deque.removeFirst();
+            }
+            while (!deque.isEmpty() && deque.getLast() < nums[fast]) {
+                deque.removeLast();
+            }
+            deque.addLast(nums[fast]);
+            if (slow >= 0) {
+                res[slow] = deque.getFirst();
+            }
         }
         return res;
     }

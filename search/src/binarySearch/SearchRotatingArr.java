@@ -55,28 +55,25 @@ public class SearchRotatingArr {
     public int search(int[] nums, int target) {
         int left = 0, right = nums.length - 1;
         while (left <= right) {
-            int mid = left + ((right - left) >> 1);
+            int mid = left + (right - left) / 2;
             if (nums[mid] == target) return mid;
-            // 判断mid是否和left在同一个有序组中
-            if (nums[left] < nums[mid]) {
-                // 如果在，则在左半部分寻找target
-                if (target >= nums[left] && target < nums[mid]) {
-                    // 如果在，则调整right的位置
+            if (nums[mid] > nums[right]) {
+                // 左边有序
+                if (target >= nums[left] && nums[mid] > target) {
                     right = mid - 1;
                 } else {
-                    // 不在，则调整left的位置
                     left = mid + 1;
                 }
             } else {
-                // 如果不在，在右半部分寻找target
-                if (target > nums[mid] && target <= nums[right]) {
-                    // 如果在，则调整left位置
+                // 右边有序
+                if (target <= nums[right] && nums[mid] < target) {
                     left = mid + 1;
                 } else {
-                    // 不在，则调整right位置
                     right = mid - 1;
                 }
+
             }
+
         }
         return -1;
     }
