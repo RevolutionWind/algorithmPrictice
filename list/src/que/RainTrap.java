@@ -1,4 +1,4 @@
-package deque;
+package que;
 
 import java.util.Stack;
 
@@ -52,8 +52,30 @@ public class RainTrap {
         return res;
     }
 
+    /*
+        单调栈
+     */
     public int trap3(int[] height) {
-        return 0;
+        Stack<Integer> stack = new Stack<>();
+        int res = 0;
+        // 遍历每一个柱体
+        for (int i = 0; i < height.length; i++) {
+            while (!stack.isEmpty() && height[stack.peek()] < height[i]) {
+                int bottomIdx = stack.pop();
+                // 如果栈顶元素一直相等, 全都pop出去，只留第一个
+                while (!stack.isEmpty() && height[stack.peek()] == stack.peek()) {
+                    stack.pop();
+                }
+                if (!stack.isEmpty()) {
+                    // stack.peek() 是接住雨水的左边位置，右边是当前的柱体height[i]
+                    // min(stack.peek(), height[i]) - height[bottomIdx]
+                    // i - peek - 1是雨水的宽度
+                    res += Math.min(stack.peek(), height[i]) * (i - stack.peek() - 1);
+                }
+            }
+            stack.push(i);
+        }
+        return res;
     }
 
 }

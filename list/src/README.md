@@ -26,7 +26,7 @@
     - 队列(queue)：队尾添加、队头移除、队头获取的时间复杂度皆为O(1)。
     - 双端队列(deque)：队头和队尾添加、移除和获取的时间复杂度都为O(1)。
     - 优先队列(PriorityQueue)：插入为O(1),因为有优先级算法所以取出时的时间复杂度为O(n),底层实现为堆(heap)或二叉搜索树(bst)
-2. Deque操作的实例代码: class deque.DequeTest
+2. Deque操作的实例代码: class que.DequeTest
 3. 分析 Queue 和 Priority Queue 的源码：
     - Queue的源码分析：
     ![队列的方法](./static/Queue.jpg)
