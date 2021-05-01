@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * n叉树的中序遍历
+ * n叉树的前序遍历
  *
  * @author walker
  * @date 2020-08-07
