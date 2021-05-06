@@ -43,19 +43,20 @@ public class LargestRectangleArea {
             如果当前栈顶元素大于当前柱子，则栈顶元素就找到了左边第一个比它小的和右边第一个比它小的
      */
     public int largestRectangleArea2(int[] heights) {
-        int res = 0, len = heights.length;
+        int len = heights.length;
         int[] temp = new int[len + 2];
-        // 如果这个数组所有元素都相等，就不会执行单调栈的逻辑
-        // 所以要在前后加上0元素
         for (int i = 1; i < len + 1; i++) {
             temp[i] = heights[i - 1];
         }
-        // 存的数组下标
+        // 单调递增栈
         Stack<Integer> stack = new Stack<>();
+        int res = 0;
         for (int i = 0; i < len + 2; i++) {
             while (!stack.isEmpty() && temp[stack.peek()] > temp[i]) {
-                Integer idx = stack.pop();
-                res = Math.max(res, temp[idx] * (i - stack.peek() - 1));
+                int idx = stack.pop();
+                if (!stack.isEmpty()) {
+                    res = Math.max(res, temp[idx] * (i - stack.peek() - 1));
+                }
             }
             stack.add(i);
         }
