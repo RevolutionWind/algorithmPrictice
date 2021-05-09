@@ -1,13 +1,12 @@
 package trie;
 
 /**
- * 208. 实现 Trie (前缀树)
+ * leetcode208. 实现 Trie (前缀树)
  * 实现一个 Trie (前缀树)，包含 insert, search, 和 startsWith 这三个操作。
  *
  * @author walker
  * @date 2020/9/8
  */
-@SuppressWarnings("unused")
 public class Trie {
 
     private final TrieNode root;
@@ -69,6 +68,18 @@ public class Trie {
         }
         return true;
     }
-
 }
 
+class TrieNode {
+    char val;
+    boolean isWord;
+    TrieNode[] children = new TrieNode[26];
+
+    TrieNode() {
+    }
+
+    TrieNode(char c) {
+        TrieNode node = new TrieNode();
+        node.val = c;
+    }
+}
