@@ -1,4 +1,4 @@
-package dp;
+package dp.coin;
 
 /**
  * 322. 零钱兑换
@@ -28,35 +28,29 @@ package dp;
 @SuppressWarnings("unused")
 public class CoinChange {
 
-    /*
-    递归， 加中间变量缓存结果
-     */
     int res = Integer.MAX_VALUE;
 
     public int coinChange(int[] coins, int amount) {
-        if (coins.length == 0) {
-            return -1;
-        }
-        // 找所有的组合
-        findWay(coins, amount, 0);
-        // 如果没有任何一种硬币组合能组成总金额，返回 -1。
-        if (res == Integer.MAX_VALUE) {
-            return -1;
-        }
-        return res;
+        dfs(coins, 0, 0, amount);
+        return res == Integer.MAX_VALUE ? 0 : res;
     }
 
-    public void findWay(int[] coins, int amount, int count) {
-        if (amount < 0) {
+    private void dfs(int[] coins, int count, int nowAmount, int amount) {
+        // end
+        if (nowAmount > amount) {
             return;
         }
-        if (amount == 0) {
+        if (nowAmount == amount) {
             res = Math.min(res, count);
         }
-
         for (int coin : coins) {
-            findWay(coins, amount - coin, count + 1);
+            dfs(coins, count + 1, nowAmount + coin, amount);
         }
+    }
+
+    public static void main(String[] args) {
+        CoinChange c = new CoinChange();
+        System.out.println(c.coinChange(new int[]{1, 2, 5}, 11));
     }
 
 
