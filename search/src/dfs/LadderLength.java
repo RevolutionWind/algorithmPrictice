@@ -85,4 +85,56 @@ public class LadderLength {
         return false;
     }
 
+    /*
+     * 双向BFS
+     */
+    public int ladderLength2(String beginWord, String endWord, List<String> wordList) {
+        Set<String> wordSet = new HashSet<>(wordList);
+        if (!wordSet.contains(endWord)) {
+            return 0;
+        }
+        Set<String> beginSet = new HashSet<>(beginWord.length() * 26),
+                endSet = new HashSet<>(endWord.length() * 26);
+        int step = 1;
+        HashSet<String> seen = new HashSet<>(wordList.size());
+
+        beginSet.add(beginWord);
+        endSet.add(endWord);
+        // BFS start
+        while (!beginSet.isEmpty() && !endSet.isEmpty()) {
+            // 优先选择小的set扩散
+            if (beginSet.size() > endSet.size()) {
+                // 交换开始和结束的hash
+                Set<String> temp = beginSet;
+                beginSet = endSet;
+                endSet = temp;
+            }
+            // 和queue一样，把当前set里的元素遍历完
+            Set<String> newBegin = new HashSet<>();
+            for (String word : beginSet) {
+                char[] chs = word.toCharArray();
+
+                for (int i = 0; i < word.length(); i++) {
+                    for (char c = 'a'; c <= 'z'; c++) {
+                        char memo = chs[i];
+                        chs[i] = c;
+                        String now = String.valueOf(chs);
+                        if (endSet.contains(now)) {
+                            return step + 1;
+                        }
+                        if (wordSet.contains(now) && !seen.contains(now)) {
+                            newBegin.add(now);
+                            seen.add(now);
+                        }
+                        chs[i] = memo;
+                    }
+                }
+            }
+
+            beginSet = newBegin;
+            step++;
+        }
+        return 0;
+    }
+
 }
