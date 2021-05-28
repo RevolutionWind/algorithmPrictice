@@ -35,7 +35,25 @@ package str;
 @SuppressWarnings("unused")
 public class RegularExpression {
 
+    /*
+       递归
+     */
     public boolean isMatch(String s, String p) {
+        if (p.isEmpty()) {
+            return s.isEmpty();
+        }
+        boolean firstMatch = !s.isEmpty() && (s.charAt(0) == p.charAt(0) || p.charAt(0) == '.');
+        if (p.length() >= 2 && p.charAt(1) == '*') {
+            return isMatch(s, p.substring(2)) || (firstMatch && isMatch(s.substring(1), p));
+        } else {
+            return firstMatch && isMatch(s.substring(1), p.substring(1));
+        }
+    }
+
+    /*
+        dp
+     */
+    public boolean isMatch2(String s, String p) {
         int m = s.length();
         int n = p.length();
         boolean[][] f = new boolean[m + 1][n + 1];
