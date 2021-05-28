@@ -1,5 +1,8 @@
 package str;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * 10. 正则表达式匹配
  * <p>
@@ -38,16 +41,24 @@ public class RegularExpression {
     /*
        递归
      */
+    Map<String, Boolean> map = new HashMap<>();
+
     public boolean isMatch(String s, String p) {
+        if (map.containsKey(s + "_" + p)) {
+            return map.get(s + "_" + p);
+        }
         if (p.isEmpty()) {
             return s.isEmpty();
         }
         boolean firstMatch = !s.isEmpty() && (s.charAt(0) == p.charAt(0) || p.charAt(0) == '.');
+        boolean res;
         if (p.length() >= 2 && p.charAt(1) == '*') {
-            return isMatch(s, p.substring(2)) || (firstMatch && isMatch(s.substring(1), p));
+            res = isMatch(s, p.substring(2)) || (firstMatch && isMatch(s.substring(1), p));
         } else {
-            return firstMatch && isMatch(s.substring(1), p.substring(1));
+            res = firstMatch && isMatch(s.substring(1), p.substring(1));
         }
+        map.put(s + "_" + p, res);
+        return res;
     }
 
     /*
@@ -55,7 +66,25 @@ public class RegularExpression {
      */
     public boolean isMatch2(String s, String p) {
         boolean[][] dp = new boolean[s.length() + 1][p.length() + 1];
+        dp[0][0] = true;
+
+        for (int j = 2; j <= p.length(); j++) {
+            dp[0][j] = p.charAt(j - 1) == '*' && dp[0][j - 2];
+        }
+        for (int i = 0; i < s.length(); i++) {
+            for (int j = 0; j < p.length(); j++) {
+                if (p.charAt(j) == '*') {
+                    dp[i + 1][j + 1] = dp[i + 1][j - 1] || firstMatch(s, p, i, j - 1) && dp[i][j + 1];
+                } else {
+                    dp[i + 1][j + 1] = firstMatch(s, p, i, j) && dp[i][j];
+                }
+            }
+        }
         return false;
+    }
+
+    private boolean firstMatch(String s, String p, int i, int j) {
+        return s.charAt(i) == p.charAt(j) || p.charAt(j) == '.';
     }
 
 }
