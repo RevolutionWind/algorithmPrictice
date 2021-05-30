@@ -67,20 +67,31 @@ public class RegularExpression {
     public boolean isMatch2(String s, String p) {
         boolean[][] dp = new boolean[s.length() + 1][p.length() + 1];
         dp[0][0] = true;
-
-        for (int j = 2; j <= p.length(); j++) {
-            dp[0][j] = p.charAt(j - 1) == '*' && dp[0][j - 2];
-        }
-        for (int i = 0; i < s.length(); i++) {
-            for (int j = 0; j < p.length(); j++) {
-                if (p.charAt(j) == '*') {
-                    dp[i + 1][j + 1] = dp[i + 1][j - 1] || firstMatch(s, p, i, j - 1) && dp[i][j + 1];
+        for (int i = 0; i <= s.length(); ++i) {
+            for (int j = 1; j <= p.length(); ++j) {
+                if (p.charAt(j - 1) == '*') {
+                    dp[i][j] = dp[i][j - 2];
+                    if (matches(s, p, i, j - 1)) {
+                        dp[i][j] = dp[i][j] || dp[i - 1][j];
+                    }
                 } else {
-                    dp[i + 1][j + 1] = firstMatch(s, p, i, j) && dp[i][j];
+                    if (matches(s, p, i, j)) {
+                        dp[i][j] = dp[i - 1][j - 1];
+                    }
                 }
             }
         }
-        return false;
+        return dp[s.length()][p.length()];
+    }
+
+    private boolean matches(String s, String p, int i, int j) {
+        if (i == 0) {
+            return false;
+        }
+        if (p.charAt(j - 1) == '.') {
+            return true;
+        }
+        return s.charAt(i - 1) == p.charAt(j - 1);
     }
 
     private boolean firstMatch(String s, String p, int i, int j) {
