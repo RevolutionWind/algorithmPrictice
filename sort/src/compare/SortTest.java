@@ -1,7 +1,7 @@
 package compare;
 
 
-import sort.compare.insert.ShellSort;
+import compare.insert.ShellSort;
 
 import java.util.Arrays;
 import java.util.stream.Collectors;

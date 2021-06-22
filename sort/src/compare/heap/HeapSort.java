@@ -1,6 +1,6 @@
 package compare.heap;
 
-import sort.compare.exchange.Exchange;
+import compare.exchange.Exchange;
 
 /**
  * 堆排序(排序结果递增)：
