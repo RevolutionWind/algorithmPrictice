@@ -1,8 +1,6 @@
 package recursion;
 
-import java.util.ArrayDeque;
 import java.util.ArrayList;
-import java.util.Deque;
 import java.util.List;
 
 /**
@@ -39,14 +37,14 @@ public class RestoreIpAddresses {
             return res;
         }
 
-        Deque<String> path = new ArrayDeque<>(4);
+        List<String> path = new ArrayList<>(s.length());
         dfs(s, len, 0, 4, path, res);
         return res;
     }
 
     // 需要一个变量记录剩余多少段还没被分割
 
-    private void dfs(String s, int len, int begin, int residue, Deque<String> path, List<String> res) {
+    private void dfs(String s, int len, int begin, int residue, List<String> path, List<String> res) {
         if (begin == len) {
             if (residue == 0) {
                 res.add(String.join(".", path));
@@ -58,17 +56,14 @@ public class RestoreIpAddresses {
             if (i >= len) {
                 break;
             }
-
             if (residue * 3 < len - i) {
                 continue;
             }
-
             if (judgeIpSegment(s, begin, i)) {
                 String currentIpSegment = s.substring(begin, i + 1);
-                path.addLast(currentIpSegment);
-
+                path.add(currentIpSegment);
                 dfs(s, len, i + 1, residue - 1, path, res);
-                path.removeLast();
+                path.remove(path.size() - 1);
             }
         }
     }
