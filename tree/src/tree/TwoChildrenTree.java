@@ -58,3 +58,12 @@ class TreeNode {
         val = x;
     }
 }
+
+class Dog {
+    int val;
+    Dog[] childs;
+
+    Dog(int x) {
+        val = x;
+    }
+}
